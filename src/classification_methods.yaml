@@ -1,0 +1,15 @@
+anomaly_detection_methods:
+  - LSTM
+  - one class SVM (OCSVM)
+  - HTM
+  - Isolation Forest
+
+feature_selection_methods:
+  - Information gain
+  - Chi-square test
+  - Fisher score
+
+similarity_functions:
+  - Cosine similarity
+  - Mahalanubis distance
+  - MSE
