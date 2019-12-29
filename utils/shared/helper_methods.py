@@ -77,3 +77,63 @@ def rolled(list, window_size):
     while count <= len(list) - window_size:
         yield list[count: count + window_size]
         count += 1
+
+
+def get_training_data_lstm(list, window_size):
+    """
+    get training data for lstm autoencoder
+    :param list: the list for training
+    :param window_size: window size for each instance in training
+    :return: X for training
+    """
+
+    X = []
+    for val in rolled(list, window_size):
+        X.append(val)
+
+    return np.array(X)
+
+
+def get_testing_data_lstm(list, labels, window_size):
+    """
+    get testing data for lstm autoencoder
+    :param list: the list for testing
+    :param labels: labels
+    :param window_size: window size for each instance in training
+    :return: (X, Y) for testing
+    """
+    X = []
+    for val in rolled(list, window_size):
+        X.append(val)
+
+    Y = []
+    for val in rolled(labels, window_size):
+        Y.append(max(val))
+
+    return np.array(X), np.array(Y)
+
+
+def get_threshold(scores, percent):
+    """
+    get threshold for classification from this percent of training set that had lower scores
+    (e.g get the threshold error in which 95% of training set had lower values than)
+    :param scores:
+    :param percent:
+    :return: threshold
+    """
+    assert percent <= 1 and percent > 0
+
+    index = int(len(scores) * percent)
+
+    return sorted(scores)[index - 1]
+
+
+def get_thresholds(list_scores, percent):
+    """
+    get threshold for classification from this percent of training set that had lower scores
+    (e.g get the threshold error in which 95% of training set had lower values than)
+    :param scores: list of scores
+    :param percent:
+    :return: list of thresholds
+    """
+    return [get_threshold(scores, percent) for scores in list_scores]
