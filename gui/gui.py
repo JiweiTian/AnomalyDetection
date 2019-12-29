@@ -3,8 +3,8 @@ import tkinter
 from tkinter import ttk
 from tkinter.filedialog import askdirectory
 
-from checkbox import Checkbar
-from menubar import Menubar
+from gui.checkbox import Checkbar
+from gui.menubar import Menubar
 
 import yaml
 
@@ -32,7 +32,7 @@ class GUI(ttk.Frame):
     #     self.new_win = tkinter.Toplevel(self.root)  # Set parent
 
     def load_classification_methods(self):
-        with open(r'.\classification_methods.yaml') as file:
+        with open(r'.\shared\classification_methods.yaml') as file:
             classification_methods = yaml.load(file, Loader=yaml.FullLoader)
             self.anomaly_detection_list = classification_methods.get(ANOMALY_DETECTION_METHODS)
             self.feature_selection_list = classification_methods.get(FEATURE_SELECTION_METHODS)
