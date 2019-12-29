@@ -1,11 +1,8 @@
-import math
-import os
 import numpy as np
 from numpy import dot
 from numpy.linalg import norm
-import matplotlib.pyplot as plt
-from utils.shared_strings import FLIGHT_ROUTES, ATTACKS, FIG_DIR
 import pandas as pd
+import yaml
 
 
 def cosine_similarity(x, y):
@@ -137,3 +134,112 @@ def get_thresholds(list_scores, percent):
     :return: list of thresholds
     """
     return [get_threshold(scores, percent) for scores in list_scores]
+
+
+def get_previous_method_scores(prediction, windows):
+    """
+    get previous method scores (TPR, FPR, delay)
+    :param prediction: predictions
+    :param windows: list of dictionaries that define lower and upper bounds for attack injections
+    :return: TPR, FPR, delay
+    """
+    fp = 0
+    fn = 0
+    tp = 0
+    tn = 0
+
+    detection_delay = -1
+
+    for window in windows:
+        upper = window["upper"]
+        lower = window["lower"]
+        assert len(prediction) >= upper
+        assert upper > lower
+
+        was_detected = False
+
+        for i in range(lower):
+            if prediction[i] == 1:
+                fp += 1
+            else:
+                tn += 1
+
+        for i in range(lower, upper):
+            if prediction[i] == 1:
+                tp += 1
+                if not was_detected:
+                    was_detected = True
+                    detection_delay = i - lower
+            else:
+                fn += 1
+
+        for i in range(upper, len(prediction)):
+            if prediction[i] == 1:
+                fp += 1
+            else:
+                tn += 1
+
+        if not was_detected:
+            detection_delay = upper - lower
+
+    tpr = tp / (tp + fn)
+    fpr = fp / (fp + tn)
+
+    return tpr, fpr, detection_delay
+
+
+def report_results(results_dir_path, verbose=1):
+    """
+
+    :param results_dir_path:
+    :param verbose:
+    :return:
+    """
+    ATTACKS = load_attacks()
+    FLIGHT_ROUTES = load_flight_routes()
+
+    for result in ["nab", "fpr", "tpr", "delay"]:
+        results = pd.DataFrame(columns=ATTACKS)
+        for i, flight_route in enumerate(FLIGHT_ROUTES):
+            df = pd.read_csv(f'{results_dir_path}/{flight_route}_{result}.csv')
+            mean = df.mean(axis=0).values
+            std = df.std(axis=0).values
+            output = [f'{round(x, 2)}±{round(y, 2)}%' for x, y in zip(mean, std)]
+            results.loc[i] = output
+
+        results.index = FLIGHT_ROUTES
+
+        if verbose:
+            print(results)
+
+        results.to_csv(f'{results_dir_path}/final_{result}.csv')
+
+
+def is_excluded_flight(route, csv):
+    """
+    return if excluded flight
+    :param route: flight route
+    :param csv: csv of a flight
+    :return:  if excluded
+    """
+    EXCLUDE_FLIGHTS = load_exclude_flights()
+
+    return route in EXCLUDE_FLIGHTS and csv in EXCLUDE_FLIGHTS[route]
+
+
+def load_from_yaml(filename, key):
+    with open(r'.\\' + filename + '.yaml') as file:
+        loaded_file = yaml.load(file, Loader=yaml.FullLoader)
+        return loaded_file.get(key)
+
+
+def load_exclude_flights():
+    return load_from_yaml('lstm_model_settings', 'EXCLUDE_FLIGHTS')
+
+
+def load_attacks():
+    return load_from_yaml('names', 'ATTACKS')
+
+
+def load_flight_routes():
+    return load_from_yaml('names', 'FLIGHT_ROUTES')

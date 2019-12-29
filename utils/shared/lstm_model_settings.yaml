@@ -11,6 +11,6 @@ LSTM_THRESHOLD_FROM_TRAINING_PERCENT_SINGLE: 1.0
 
 #these flight have corrupted data - "speed" attribute
 EXCLUDE_FLIGHTS:
-  - "washington_to_san_francisco":
+  "washington_to_san_francisco":
     - "38.csv"
     - "41.csv"
