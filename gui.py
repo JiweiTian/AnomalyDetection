@@ -3,8 +3,8 @@ import tkinter
 from tkinter import ttk
 from tkinter.filedialog import askdirectory
 
-from src.checkbox import Checkbar
-from src.menubar import Menubar
+from checkbox import Checkbar
+from menubar import Menubar
 
 import yaml
 

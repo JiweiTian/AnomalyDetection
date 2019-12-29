@@ -1,0 +1,11 @@
+FLIGHT_ROUTES:
+  - "chicago_to_guadalajara"
+  - "mexico_las_veags"
+  - "moscow_to_madrid_features"
+  - "washington_to_san_francisco"
+
+ATTACKS:
+  - "down_attack"
+  - "fore_attack"
+  - "random_attack"
+  - "up_attack"
