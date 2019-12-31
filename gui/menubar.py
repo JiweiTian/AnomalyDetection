@@ -1,5 +1,4 @@
 import tkinter
-# Lots of tutorials have from tkinter import *, but that is pretty much always a bad idea
 from tkinter import ttk
 
 

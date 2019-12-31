@@ -1,12 +1,13 @@
 import os
+import yaml
 import tkinter
+
 from tkinter import ttk
 from tkinter.filedialog import askdirectory
-
 from gui.checkbox import Checkbar
 from gui.menubar import Menubar
 
-import yaml
+
 
 """
 ~~~~~~~~~~~~~~~~~~~~~~~~  Class Description ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
