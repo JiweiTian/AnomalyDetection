@@ -26,5 +26,6 @@ class FeatureSelectionWindow(tk.Frame):
         self.feature_selection_title.grid(row=0, column=2, pady=3)
         self.feature_selection_methods.grid(row=2, column=2, pady=3)
 
-        self.back_button.grid(row=15, column=0, pady=3)
-        self.next_button.grid(row=15, column=3, pady=3)
+        self.grid_rowconfigure(13, minsize=100)
+        self.back_button.grid(row=50, column=2, pady=3)
+        self.next_button.grid(row=50, column=15, pady=3)

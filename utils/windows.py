@@ -1,4 +1,4 @@
-from utils.settings import LSTM_WINDOW_SIZE
+#from utils.settings import LSTM_WINDOW_SIZE
 
 windows = {
     "flight": [
@@ -9,7 +9,7 @@ windows = {
     ],
     "flight_lstm": [
         {
-            "lower": 180 - LSTM_WINDOW_SIZE + 1,
+            #"lower": 180 - LSTM_WINDOW_SIZE + 1,
             "upper": 249
         }
     ]

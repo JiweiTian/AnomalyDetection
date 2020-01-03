@@ -13,3 +13,36 @@ similarity_functions:
   - Cosine similarity
   - Mahalanubis distance
   - MSE
+
+lstm_activation:
+  - "relu"
+  - "softmax"
+  - "linear"
+  - "sigmoid"
+
+lstm_loss:
+  - "mean_squared_error"
+  - "mean_absolute_error"
+
+lstm_optimizer:
+  - "SGD"
+  - "Adam"
+  - "Adadelta"
+
+lstm_window:
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+
+lstm_encoder_dimension:
+  - 10
+
+lstm_threshold_from_training_percent:
+  - 0.99
+  - 0.98
+  - 0.97
+  - 0.96
+  - 0.95

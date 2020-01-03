@@ -4,17 +4,18 @@ from keras.layers import Dense
 from keras.layers import RepeatVector
 from keras.layers import TimeDistributed
 
-from keras.utils import plot_model
 
-
-def get_lstm_autoencoder_model(timesteps, features, incoding_dimension):
+def get_lstm_autoencoder_model(timesteps,
+                               features,
+                               encoding_dimension,
+                               activation,
+                               loss,
+                               optimizer):
     model = Sequential()
-    model.add(LSTM(incoding_dimension, activation='relu', input_shape=(timesteps, features)))
+    model.add(LSTM(encoding_dimension, activation=activation, input_shape=(timesteps, features)))
     model.add(RepeatVector(timesteps))
-    model.add(LSTM(incoding_dimension, activation='relu', return_sequences=True))
+    model.add(LSTM(encoding_dimension, activation=activation, return_sequences=True))
     model.add(TimeDistributed(Dense(features)))
-    model.compile(optimizer='adam', loss='mse')
-
-    plot_model(model, to_file='model.png')
+    model.compile(optimizer=optimizer, loss=loss)
 
     return model
